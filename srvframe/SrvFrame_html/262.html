@@ -1,0 +1,35 @@
+<html><head><title>longconnlistentask.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: D:\工作\taishan\server\srvframe\src\task\longconnlistentask.h</h3>
+<SCRIPT>
+defaultStatus = "File: D:\\工作\\taishan\\server\\srvframe\\src\\task\\longconnlistentask.h";
+top.document.title  = "longconnlistentask.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="preproc">#ifndef <a href="dictionary_Non-Alpha.html#263">__LONGCONNLISTENTASK_H</a></span>
+<a name="2"><font size=-1>2     </font></a><span class="preproc">#define <a href="dictionary_Non-Alpha.html#263">__LONGCONNLISTENTASK_H</a></span>
+<a name="3"><font size=-1>3     </font></a><span class="preproc"></span>
+<a name="4"><font size=-1>4     </font></a><span class="preproc">#include </span><span class="string">&quot;sockettask.h&quot;</span>
+<a name="5"><font size=-1>5     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;framecommon/framecommon.h&quot;</span>
+<a name="6"><font size=-1>6     </font></a><span class="string"></span><span class="keyword">using namespace </span><span class="default">std;</span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span>
+<a name="8"><font size=-1>8     </font></a><span class="default"></span><span class="keyword">class <a href="dictionary_C.html#265">CLongConnListenTask</a> </span><span class="default">: </span><span class="keyword">public <a href="dictionary_C.html#266">CSocketTask</a></span>
+<a name="9"><font size=-1>9     </font></a><span class="keyword"></span><span class="default">{</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span><span class="keyword">public</span><span class="default">:</span>
+<a name="11"><font size=-1>11     </font></a><span class="default">	<a href="dictionary_C.html#267">CLongConnListenTask</a>(<a href="dictionary_C.html#268">CTcpSocket</a> *pSocket, <a href="dictionary_C.html#67">CNetProcessThread</a>* pWorkThread, </span><span class="keyword">int </span><span class="default">nRecvAndSendThreadType = ENTITYTYPE_LONGCONN_RECVANDSEND);</span>
+<a name="12"><font size=-1>12     </font></a><span class="default">	~<a href="dictionary_Non-Alpha.html#269">CLongConnListenTask</a>();</span>
+<a name="13"><font size=-1>13     </font></a><span class="default"></span><span class="keyword">public</span><span class="default">:</span>
+<a name="14"><font size=-1>14     </font></a><span class="default">	</span><span class="keyword">virtual int <a href="dictionary_I.html#271">Init</a></span><span class="default">();</span>
+<a name="15"><font size=-1>15     </font></a><span class="default">	</span><span class="keyword">int <a href="dictionary_P.html#273">Process</a></span><span class="default">(<a href="dictionary_C.html#23">CMsg</a> *pMsg);        </span>
+<a name="16"><font size=-1>16     </font></a><span class="default">	</span><span class="keyword">int <a href="dictionary_H.html#275">HandleProcess</a></span><span class="default">(</span><span class="keyword">int </span><span class="default">event);</span>
+<a name="17"><font size=-1>17     </font></a><span class="default"></span><span class="keyword">protected</span><span class="default">:</span>
+<a name="18"><font size=-1>18     </font></a><span class="default">	</span><span class="keyword">int <a href="dictionary_D.html#277">DestroySelf</a></span><span class="default">();</span>
+<a name="19"><font size=-1>19     </font></a><span class="default">	</span><span class="keyword">int <a href="dictionary_P.html#279">PutMsgToSendList</a></span><span class="default">(</span><span class="keyword">const char</span><span class="default">* pBuf, </span><span class="keyword">int </span><span class="default">nLen);		</span>
+<a name="20"><font size=-1>20     </font></a><span class="default">	</span><span class="keyword">int <a href="dictionary_A.html#281">AddToEpoll</a></span><span class="default">();</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">	</span><span class="keyword">int <a href="dictionary_M.html#282">m_nRecvAndSendThreadType</a></span><span class="default">;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default">};</span>
+<a name="23"><font size=-1>23     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="24"><font size=-1>24     </font></a><span class="preproc"></span>
+<a name="25"><font size=-1>25     </font></a><span class="preproc"></span>
+</pre></body></html>

@@ -1,0 +1,6 @@
+INCLUDE= -I/usr/include/mysql -I${SERVER_ROOT}/src/common\
+-I${SERVER_ROOT}/src/command -I${FRAMECOMMON}/include\
+-I${SERVER_ROOT}/src/net -I${SERVER_ROOT}/src/task -I${SERVER_ROOT}/src/main\
+-I${SERVER_ROOT}/src/thread -I${SERVER_ROOT}/src/stat 
+LIBS= /usr/lib64/mysql/libmysqlclient_r.a -lz -luuid -lpthread -lssl
+CFLAGS = -g -Wall -D__USE_EPOLL -D_REENTRANT -fPIC

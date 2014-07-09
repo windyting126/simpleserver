@@ -1,0 +1,1 @@
+*/1 * * * * root /opt/LoadRcDb/loadrctable.sh >> /opt/LoadRcDb/runlog.txt

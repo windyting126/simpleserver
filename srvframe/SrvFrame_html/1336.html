@@ -1,0 +1,189 @@
+<html><head><title>LongConnectedThread.cpp</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: D:\工作\taishan\server\srvframe\src\thread\LongConnectedThread.cpp</h3>
+<SCRIPT>
+defaultStatus = "File: D:\\工作\\taishan\\server\\srvframe\\src\\thread\\LongConnectedThread.cpp";
+top.document.title  = "LongConnectedThread.cpp";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="comment">/****************************************************************************</span>
+<a name="2"><font size=-1>2     </font></a><span class="comment">**</span>
+<a name="3"><font size=-1>3     </font></a><span class="comment">**  Copyright  (c)  2008-2009,  Baofeng, Inc.  All Rights Reserved.</span>
+<a name="4"><font size=-1>4     </font></a><span class="comment">**</span>
+<a name="5"><font size=-1>5     </font></a><span class="comment">**  Subsystem:    ConnectServer</span>
+<a name="6"><font size=-1>6     </font></a><span class="comment">**  File:         	     LongConnectedThread.cpp</span>
+<a name="7"><font size=-1>7     </font></a><span class="comment">**  Created By:   fwx</span>
+<a name="8"><font size=-1>8     </font></a><span class="comment">**  Created On:   2009/01/08</span>
+<a name="9"><font size=-1>9     </font></a><span class="comment">**</span>
+<a name="10"><font size=-1>10     </font></a><span class="comment">**  Purpose:</span>
+<a name="11"><font size=-1>11     </font></a><span class="comment">**     ForwardTaskThread</span>
+<a name="12"><font size=-1>12     </font></a><span class="comment">**</span>
+<a name="13"><font size=-1>13     </font></a><span class="comment">**  History:</span>
+<a name="14"><font size=-1>14     </font></a><span class="comment">**  Programmer      Date         Version        Number      Description</span>
+<a name="15"><font size=-1>15     </font></a><span class="comment">**  --------------- --------   ---------- ------------------------------</span>
+<a name="16"><font size=-1>16     </font></a><span class="comment">**    fwx       2009/01/08         1.0            01          creation</span>
+<a name="17"><font size=-1>17     </font></a><span class="comment">****************************************************************************/</span>
+<a name="18"><font size=-1>18     </font></a><span class="comment"></span><span class="preproc">#include </span><span class="string">&lt;string&gt;</span>
+<a name="19"><font size=-1>19     </font></a><span class="string"></span>
+<a name="20"><font size=-1>20     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;commmsg.h&quot;</span>
+<a name="21"><font size=-1>21     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;LongConnectedThread.h&quot;</span>
+<a name="22"><font size=-1>22     </font></a><span class="string"></span><span class="preproc">#include </span><span class="string">&quot;CommonTask.h&quot;</span>
+<a name="23"><font size=-1>23     </font></a><span class="string"></span>
+<a name="24"><font size=-1>24     </font></a><span class="string"></span>
+<a name="25"><font size=-1>25     </font></a><span class="string"><a href="dictionary_C.html#1339">CLongConnectedThread</a></span><span class="default">::<a href="dictionary_C.html#1340">CLongConnectedThread</a>( </span><span class="keyword">int <a href="dictionary_I.html#1341">iEntityType</a></span><span class="default">, </span><span class="keyword">int <a href="dictionary_I.html#1342">iEntityId</a></span><span class="default">, </span><span class="keyword">int <a href="dictionary_I.html#1343">iListType</a></span><span class="comment">/* = 0*/ </span><span class="default">)</span>
+<a name="26"><font size=-1>26     </font></a><span class="default">	: <a href="dictionary_C.html#467">CNetProcessThread</a>(<a href="dictionary_I.html#1341">iEntityType</a>, <a href="dictionary_I.html#1342">iEntityId</a>)</span>
+<a name="27"><font size=-1>27     </font></a><span class="default">	, <a href="dictionary_M.html#1344">m_pEpollReactor</a>( <a href="dictionary_N.html#14">NULL</a> )</span>
+<a name="28"><font size=-1>28     </font></a><span class="default">	, <a href="dictionary_M.html#1345">m_iListType</a>( <a href="dictionary_I.html#1343">iListType</a> )</span>
+<a name="29"><font size=-1>29     </font></a><span class="default">{</span>
+<a name="30"><font size=-1>30     </font></a><span class="default"></span>
+<a name="31"><font size=-1>31     </font></a><span class="default">}</span>
+<a name="32"><font size=-1>32     </font></a><span class="default">        </span>
+<a name="33"><font size=-1>33     </font></a><span class="default"><a href="dictionary_C.html#1339">CLongConnectedThread</a>::~<a href="dictionary_Non-Alpha.html#1346">CLongConnectedThread</a>( </span><span class="keyword">void </span><span class="default">)</span>
+<a name="34"><font size=-1>34     </font></a><span class="default">{</span>
+<a name="35"><font size=-1>35     </font></a><span class="default">	<a href="dictionary_S.html#1347">Stop</a>();</span>
+<a name="36"><font size=-1>36     </font></a><span class="default">}</span>
+<a name="37"><font size=-1>37     </font></a><span class="default"></span>
+<a name="38"><font size=-1>38     </font></a><span class="default"></span><span class="keyword">int <a href="dictionary_C.html#1339">CLongConnectedThread</a></span><span class="default">::<a href="dictionary_I.html#1348">Init</a>( </span><span class="keyword">void </span><span class="default">)</span>
+<a name="39"><font size=-1>39     </font></a><span class="default">{</span>
+<a name="40"><font size=-1>40     </font></a><span class="default">	<a href="dictionary_M.html#1344">m_pEpollReactor</a> = <a href="dictionary_C.html#579">CEpollReactor</a>::<a href="dictionary_G.html#580">GetInstance</a>();</span>
+<a name="41"><font size=-1>41     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">( !<a href="dictionary_M.html#1344">m_pEpollReactor</a> )</span>
+<a name="42"><font size=-1>42     </font></a><span class="default">	{</span>
+<a name="43"><font size=-1>43     </font></a><span class="default">		</span><span class="keyword">return </span><span class="default">-</span><span class="number">1</span><span class="default">;</span>
+<a name="44"><font size=-1>44     </font></a><span class="default">	}</span>
+<a name="45"><font size=-1>45     </font></a><span class="default">	</span><span class="keyword">return <a href="dictionary_C.html#67">CNetProcessThread</a></span><span class="default">::<a href="dictionary_I.html#476">Init</a>();</span>
+<a name="46"><font size=-1>46     </font></a><span class="default">}</span>
+<a name="47"><font size=-1>47     </font></a><span class="default"></span>
+<a name="48"><font size=-1>48     </font></a><span class="default"></span><span class="keyword">int  <a href="dictionary_C.html#1339">CLongConnectedThread</a></span><span class="default">::<a href="dictionary_P.html#1349">Process</a>(<a href="dictionary_C.html#23">CMsg</a> *<a href="dictionary_P.html#1350">pMsg</a>)</span>
+<a name="49"><font size=-1>49     </font></a><span class="default">{</span>
+<a name="50"><font size=-1>50     </font></a><span class="default">        <a href="dictionary_T.html#54">TMsg</a> *<a href="dictionary_P.html#1351">pTMsg</a> = <a href="dictionary_P.html#1350">pMsg</a>-&gt;<a href="dictionary_G.html#55">GetTMsg</a>();</span>
+<a name="51"><font size=-1>51     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">( !<a href="dictionary_P.html#1351">pTMsg</a> )</span>
+<a name="52"><font size=-1>52     </font></a><span class="default">	{</span>
+<a name="53"><font size=-1>53     </font></a><span class="default">		</span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="54"><font size=-1>54     </font></a><span class="default">	}</span>
+<a name="55"><font size=-1>55     </font></a><span class="default">        <a href="dictionary_W.html#944">WRITE_TRACE</a>(</span><span class="string">&quot;The LongConnected thread recv a  msg , msgtype %d...&quot;</span><span class="default">, <a href="dictionary_P.html#1351">pTMsg</a>-&gt;<a href="dictionary_M.html#56">msgType</a>);        </span>
+<a name="56"><font size=-1>56     </font></a><span class="default">	</span><span class="keyword">if </span><span class="default">( <a href="dictionary_P.html#1351">pTMsg</a>-&gt;<a href="dictionary_M.html#56">msgType</a> == <a href="dictionary_C.html#725">CLIENTMSGTYPE</a>)</span>
+<a name="57"><font size=-1>57     </font></a><span class="default">	{</span>
+<a name="58"><font size=-1>58     </font></a><span class="default">		<a href="dictionary_C.html#1016">CClientMsgBody</a> *<a href="dictionary_P.html#1352">pBody</a> = ( <a href="dictionary_C.html#1016">CClientMsgBody</a> * )<a href="dictionary_P.html#1350">pMsg</a>-&gt;<a href="dictionary_G.html#39">GetMsgBody</a>();</span>
+<a name="59"><font size=-1>59     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">( !<a href="dictionary_P.html#1352">pBody</a> )</span>
+<a name="60"><font size=-1>60     </font></a><span class="default">		{</span>
+<a name="61"><font size=-1>61     </font></a><span class="default">			</span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="62"><font size=-1>62     </font></a><span class="default">		}</span>
+<a name="63"><font size=-1>63     </font></a><span class="default"></span>
+<a name="64"><font size=-1>64     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">( <a href="dictionary_M.html#1345">m_iListType</a> )</span>
+<a name="65"><font size=-1>65     </font></a><span class="default">		{</span>
+<a name="66"><font size=-1>66     </font></a><span class="default">			std::<a href="dictionary_L.html#493">list</a>&lt;CSocketTask*&gt;::<a href="dictionary_I.html#1353">iterator</a> <a href="dictionary_I.html#1354">it</a> = <a href="dictionary_M.html#492">m_pSocketList</a>.<a href="dictionary_B.html#1308">begin</a>();</span>
+<a name="67"><font size=-1>67     </font></a><span class="default">			</span><span class="keyword">while</span><span class="default">( <a href="dictionary_I.html#1354">it</a> != <a href="dictionary_M.html#492">m_pSocketList</a>.<a href="dictionary_E.html#1309">end</a>() )</span>
+<a name="68"><font size=-1>68     </font></a><span class="default">			{</span>
+<a name="69"><font size=-1>69     </font></a><span class="default">				<a href="dictionary_C.html#266">CSocketTask</a> * <a href="dictionary_P.html#1355">pSocketTask</a> = ( *<a href="dictionary_I.html#1354">it</a> );</span>
+<a name="70"><font size=-1>70     </font></a><span class="default">				</span><span class="keyword">if </span><span class="default">( <a href="dictionary_P.html#1355">pSocketTask</a> )</span>
+<a name="71"><font size=-1>71     </font></a><span class="default">				{</span>
+<a name="72"><font size=-1>72     </font></a><span class="default">					<a href="dictionary_P.html#1355">pSocketTask</a>-&gt;<a href="dictionary_P.html#280">PutMsgToSendList</a>( <a href="dictionary_P.html#1352">pBody</a>-&gt;<a href="dictionary_G.html#1023">GetBuffer</a>(), <a href="dictionary_P.html#1352">pBody</a>-&gt;<a href="dictionary_G.html#1025">GetLen</a>() );</span>
+<a name="73"><font size=-1>73     </font></a><span class="default">				}</span>
+<a name="74"><font size=-1>74     </font></a><span class="default">				<a href="dictionary_I.html#1354">it</a> ++;</span>
+<a name="75"><font size=-1>75     </font></a><span class="default">			}</span>
+<a name="76"><font size=-1>76     </font></a><span class="default">		}</span>
+<a name="77"><font size=-1>77     </font></a><span class="default">		</span><span class="keyword">else</span>
+<a name="78"><font size=-1>78     </font></a><span class="keyword">		</span><span class="default">{</span>
+<a name="79"><font size=-1>79     </font></a><span class="default">			<a href="dictionary_M.html#366">map</a>&lt;ULONG64, CSocketTask*&gt;::<a href="dictionary_I.html#566">iterator</a> <a href="dictionary_I.html#1356">it</a> = <a href="dictionary_M.html#494">m_pMapSocketList</a>.<a href="dictionary_B.html#567">begin</a>();</span>
+<a name="80"><font size=-1>80     </font></a><span class="default">			</span><span class="keyword">while</span><span class="default">( <a href="dictionary_I.html#1356">it</a> != <a href="dictionary_M.html#494">m_pMapSocketList</a>.<a href="dictionary_E.html#568">end</a>() )</span>
+<a name="81"><font size=-1>81     </font></a><span class="default">			{</span>
+<a name="82"><font size=-1>82     </font></a><span class="default">				<a href="dictionary_C.html#266">CSocketTask</a> * <a href="dictionary_P.html#1357">pSocketTask</a> = ( *<a href="dictionary_I.html#1356">it</a> ).<a href="dictionary_S.html#570">second</a>;</span>
+<a name="83"><font size=-1>83     </font></a><span class="default">				</span><span class="keyword">if </span><span class="default">( <a href="dictionary_P.html#1357">pSocketTask</a> )</span>
+<a name="84"><font size=-1>84     </font></a><span class="default">				{</span>
+<a name="85"><font size=-1>85     </font></a><span class="default">					<a href="dictionary_P.html#1357">pSocketTask</a>-&gt;<a href="dictionary_P.html#280">PutMsgToSendList</a>( <a href="dictionary_P.html#1352">pBody</a>-&gt;<a href="dictionary_G.html#1023">GetBuffer</a>(), <a href="dictionary_P.html#1352">pBody</a>-&gt;<a href="dictionary_G.html#1025">GetLen</a>() );</span>
+<a name="86"><font size=-1>86     </font></a><span class="default">				}</span>
+<a name="87"><font size=-1>87     </font></a><span class="default">				<a href="dictionary_I.html#1356">it</a> ++;</span>
+<a name="88"><font size=-1>88     </font></a><span class="default">			}</span>
+<a name="89"><font size=-1>89     </font></a><span class="default">		}</span>
+<a name="90"><font size=-1>90     </font></a><span class="default">	}</span>
+<a name="91"><font size=-1>91     </font></a><span class="default">	</span><span class="keyword">else if </span><span class="default">( <a href="dictionary_P.html#1351">pTMsg</a>-&gt;<a href="dictionary_S.html#909">srcEntityType</a> == <a href="dictionary_E.html#1358">EPOLLREACTORENTITY</a> )</span>
+<a name="92"><font size=-1>92     </font></a><span class="default">	{</span>
+<a name="93"><font size=-1>93     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_P.html#1351">pTMsg</a>-&gt;<a href="dictionary_M.html#56">msgType</a> == <a href="dictionary_C.html#729">CONNECTMSGTYPE</a>)</span>
+<a name="94"><font size=-1>94     </font></a><span class="default">		{</span>
+<a name="95"><font size=-1>95     </font></a><span class="default">			<a href="dictionary_C.html#1042">CConnectMsgBody</a> *<a href="dictionary_P.html#1359">pBody</a> = (<a href="dictionary_C.html#1042">CConnectMsgBody</a>*)<a href="dictionary_P.html#1350">pMsg</a>-&gt;<a href="dictionary_G.html#39">GetMsgBody</a>();</span>
+<a name="96"><font size=-1>96     </font></a><span class="default">			</span><span class="keyword">if </span><span class="default">( !<a href="dictionary_P.html#1359">pBody</a> )</span>
+<a name="97"><font size=-1>97     </font></a><span class="default">			{</span>
+<a name="98"><font size=-1>98     </font></a><span class="default">				</span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="99"><font size=-1>99     </font></a><span class="default">			}</span>
+<a name="100"><font size=-1>100     </font></a><span class="default"></span>
+<a name="101"><font size=-1>101     </font></a><span class="default">			std::<a href="dictionary_S.html#1360">string</a> <a href="dictionary_T.html#1361">tmpStr</a> = <a href="dictionary_P.html#1359">pBody</a>-&gt;<a href="dictionary_G.html#1054">GetRemoteIp</a>();</span>
+<a name="102"><font size=-1>102     </font></a><span class="default">			<a href="dictionary_C.html#268">CTcpSocket</a> *<a href="dictionary_P.html#1362">pSocket</a> = </span><span class="keyword">new <a href="dictionary_C.html#268">CTcpSocket</a></span><span class="default">( <a href="dictionary_T.html#1361">tmpStr</a>, <a href="dictionary_P.html#1359">pBody</a>-&gt;<a href="dictionary_G.html#1055">GetRemotePort</a>(), <a href="dictionary_P.html#1359">pBody</a>-&gt;<a href="dictionary_G.html#1053">GetSocket</a>() );</span>
+<a name="103"><font size=-1>103     </font></a><span class="default">			<a href="dictionary_C.html#266">CSocketTask</a> *<a href="dictionary_T.html#1363">tmpSocketTask</a> = <a href="dictionary_N.html#14">NULL</a>;</span>
+<a name="104"><font size=-1>104     </font></a><span class="default">			<a href="dictionary_C.html#1365">CCommonTaskArg</a> <a href="dictionary_C.html#1364">commonTaskArg</a>( <a href="dictionary_P.html#1359">pBody</a>-&gt;<a href="dictionary_G.html#1056">GetDestMachineType</a>(), <a href="dictionary_P.html#1359">pBody</a>-&gt;<a href="dictionary_G.html#1057">GetDestMachineIndex</a>(), </span><span class="keyword">true</span><span class="default">, <a href="dictionary_M.html#1345">m_iListType</a> );</span>
+<a name="105"><font size=-1>105     </font></a><span class="default">			<a href="dictionary_T.html#1363">tmpSocketTask</a> = <a href="dictionary_C.html#511">CMyserver</a>::<a href="dictionary_G.html#512">GetInstance</a>()-&gt;<a href="dictionary_G.html#547">GetClassFactory</a>()-&gt;<a href="dictionary_G.html#549">GenSocketTask</a>(</span><span class="keyword">this</span><span class="default">, <a href="dictionary_P.html#1362">pSocket</a>, COMMONTASK, &amp;<a href="dictionary_C.html#1364">commonTaskArg</a> );</span>
+<a name="106"><font size=-1>106     </font></a><span class="default">			<a href="dictionary_T.html#1363">tmpSocketTask</a>-&gt;<a href="dictionary_I.html#272">Init</a>();</span>
+<a name="107"><font size=-1>107     </font></a><span class="default">			<a href="dictionary_W.html#50">WriteRunInfo</a>::<a href="dictionary_W.html#170">WriteLog</a>( </span><span class="string">&quot;connect to %d %d %d succ &quot;</span><span class="default">, ( </span><span class="keyword">int </span><span class="default">)<a href="dictionary_P.html#1359">pBody</a>-&gt;<a href="dictionary_G.html#1056">GetDestMachineType</a>(), ( </span><span class="keyword">int </span><span class="default">)<a href="dictionary_P.html#1359">pBody</a>-&gt;<a href="dictionary_G.html#1057">GetDestMachineIndex</a>(), <a href="dictionary_P.html#1359">pBody</a>-&gt;<a href="dictionary_G.html#1053">GetSocket</a>() );</span>
+<a name="108"><font size=-1>108     </font></a><span class="default">		}</span>
+<a name="109"><font size=-1>109     </font></a><span class="default">		</span><span class="keyword">else</span>
+<a name="110"><font size=-1>110     </font></a><span class="keyword">		</span><span class="default">{</span>
+<a name="111"><font size=-1>111     </font></a><span class="default">			<a href="dictionary_W.html#50">WriteRunInfo</a>::<a href="dictionary_W.html#170">WriteLog</a>(</span><span class="string">&quot;Send&amp;recv  thread recv invalid msgtype %d&quot;</span><span class="default">, <a href="dictionary_P.html#1351">pTMsg</a>-&gt;<a href="dictionary_M.html#56">msgType</a>);</span>
+<a name="112"><font size=-1>112     </font></a><span class="default">		}</span>
+<a name="113"><font size=-1>113     </font></a><span class="default">	}</span>
+<a name="114"><font size=-1>114     </font></a><span class="default">	</span><span class="keyword">else if </span><span class="default">( <a href="dictionary_P.html#1351">pTMsg</a>-&gt;<a href="dictionary_S.html#909">srcEntityType</a>== <a href="dictionary_M.html#1367">MAINENTITY</a> )</span>
+<a name="115"><font size=-1>115     </font></a><span class="default">	{</span>
+<a name="116"><font size=-1>116     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_P.html#1351">pTMsg</a>-&gt;<a href="dictionary_M.html#56">msgType</a> == <a href="dictionary_T.html#730">TOCONNECTMSGTYPE</a>)</span>
+<a name="117"><font size=-1>117     </font></a><span class="default">		{</span>
+<a name="118"><font size=-1>118     </font></a><span class="default">			<a href="dictionary_C.html#1067">CToConnectMsgBody</a> *<a href="dictionary_P.html#1368">pBody</a> = (<a href="dictionary_C.html#1067">CToConnectMsgBody</a>*)<a href="dictionary_P.html#1350">pMsg</a>-&gt;<a href="dictionary_G.html#39">GetMsgBody</a>();</span>
+<a name="119"><font size=-1>119     </font></a><span class="default">			</span><span class="keyword">if </span><span class="default">( !<a href="dictionary_P.html#1368">pBody</a> )</span>
+<a name="120"><font size=-1>120     </font></a><span class="default">			{</span>
+<a name="121"><font size=-1>121     </font></a><span class="default">				</span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="122"><font size=-1>122     </font></a><span class="default">			}</span>
+<a name="123"><font size=-1>123     </font></a><span class="default">			</span><span class="keyword">if </span><span class="default">( <a href="dictionary_M.html#1344">m_pEpollReactor</a> )</span>
+<a name="124"><font size=-1>124     </font></a><span class="default">			{</span>
+<a name="125"><font size=-1>125     </font></a><span class="default">				<a href="dictionary_M.html#1344">m_pEpollReactor</a>-&gt;<a href="dictionary_C.html#589">Connect</a>(<a href="dictionary_P.html#1368">pBody</a>-&gt;<a href="dictionary_G.html#1078">GetDestMachineType</a>(), <a href="dictionary_P.html#1368">pBody</a>-&gt;<a href="dictionary_G.html#1079">GetDestMachineIndex</a>(), <a href="dictionary_P.html#1368">pBody</a>-&gt;<a href="dictionary_G.html#1076">GetRemoteIp</a>(), <a href="dictionary_P.html#1368">pBody</a>-&gt;<a href="dictionary_G.html#1077">GetRemotePort</a>(), </span><span class="number">3</span><span class="default">, <a href="dictionary_M.html#1369">m_nEntityType</a>, <a href="dictionary_M.html#1370">m_nEntityId</a>);</span>
+<a name="126"><font size=-1>126     </font></a><span class="default">			}</span>
+<a name="127"><font size=-1>127     </font></a><span class="default">		}</span>
+<a name="128"><font size=-1>128     </font></a><span class="default">		</span><span class="keyword">else</span>
+<a name="129"><font size=-1>129     </font></a><span class="keyword">		</span><span class="default">{</span>
+<a name="130"><font size=-1>130     </font></a><span class="default">			<a href="dictionary_W.html#50">WriteRunInfo</a>::<a href="dictionary_W.html#170">WriteLog</a>(</span><span class="string">&quot;Send msg thread recv invalid msgtype %d&quot;</span><span class="default">, <a href="dictionary_P.html#1351">pTMsg</a>-&gt;<a href="dictionary_M.html#56">msgType</a>);</span>
+<a name="131"><font size=-1>131     </font></a><span class="default">		}</span>
+<a name="132"><font size=-1>132     </font></a><span class="default">	}</span>
+<a name="133"><font size=-1>133     </font></a><span class="default">	</span><span class="keyword">else if </span><span class="default">(<a href="dictionary_P.html#1351">pTMsg</a>-&gt;<a href="dictionary_M.html#56">msgType</a> == <a href="dictionary_D.html#733">DISCONNECTMSGTYP</a>)</span>
+<a name="134"><font size=-1>134     </font></a><span class="default">	{</span>
+<a name="135"><font size=-1>135     </font></a><span class="default">		<a href="dictionary_C.html#1042">CConnectMsgBody</a> *<a href="dictionary_P.html#1371">pBody</a> = ( <a href="dictionary_C.html#1042">CConnectMsgBody</a>* )<a href="dictionary_P.html#1350">pMsg</a>-&gt;<a href="dictionary_G.html#39">GetMsgBody</a>();</span>
+<a name="136"><font size=-1>136     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">( !<a href="dictionary_P.html#1371">pBody</a> )</span>
+<a name="137"><font size=-1>137     </font></a><span class="default">		{</span>
+<a name="138"><font size=-1>138     </font></a><span class="default">			</span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="139"><font size=-1>139     </font></a><span class="default">		}</span>
+<a name="140"><font size=-1>140     </font></a><span class="default">		<a href="dictionary_U.html#484">ULONG64</a> <a href="dictionary_N.html#1372">nTaskId</a> = </span><span class="number">0</span><span class="default">;</span>
+<a name="141"><font size=-1>141     </font></a><span class="default">		</span><span class="keyword">if </span><span class="default">(<a href="dictionary_C.html#1373">CCommonTask</a>::<a href="dictionary_G.html#1374">GetConnectTaskId</a>(<a href="dictionary_P.html#1371">pBody</a>-&gt;<a href="dictionary_G.html#1056">GetDestMachineType</a>(), <a href="dictionary_P.html#1371">pBody</a>-&gt;<a href="dictionary_G.html#1057">GetDestMachineIndex</a>(), <a href="dictionary_N.html#1372">nTaskId</a>) == </span><span class="number">0</span><span class="default">)</span>
+<a name="142"><font size=-1>142     </font></a><span class="default">		{</span>
+<a name="143"><font size=-1>143     </font></a><span class="default">			</span><span class="keyword">if </span><span class="default">( <a href="dictionary_M.html#1345">m_iListType</a> )</span>
+<a name="144"><font size=-1>144     </font></a><span class="default">			{</span>
+<a name="145"><font size=-1>145     </font></a><span class="default">				std::<a href="dictionary_L.html#493">list</a>&lt;CSocketTask*&gt;::<a href="dictionary_I.html#1353">iterator</a> <a href="dictionary_I.html#1354">it</a> = <a href="dictionary_M.html#492">m_pSocketList</a>.<a href="dictionary_B.html#1308">begin</a>();</span>
+<a name="146"><font size=-1>146     </font></a><span class="default">				</span><span class="keyword">while</span><span class="default">( <a href="dictionary_I.html#1354">it</a> != <a href="dictionary_M.html#492">m_pSocketList</a>.<a href="dictionary_E.html#1309">end</a>() )</span>
+<a name="147"><font size=-1>147     </font></a><span class="default">				{</span>
+<a name="148"><font size=-1>148     </font></a><span class="default">					<a href="dictionary_C.html#266">CSocketTask</a> * <a href="dictionary_P.html#1375">pSocketTask</a> = ( *<a href="dictionary_I.html#1354">it</a> );</span>
+<a name="149"><font size=-1>149     </font></a><span class="default">					</span><span class="keyword">if </span><span class="default">( <a href="dictionary_P.html#1375">pSocketTask</a> &amp;&amp; <a href="dictionary_P.html#1375">pSocketTask</a>-&gt;<a href="dictionary_G.html#1321">GetTaskId</a>() == <a href="dictionary_N.html#1372">nTaskId</a>)</span>
+<a name="150"><font size=-1>150     </font></a><span class="default">					{</span>
+<a name="151"><font size=-1>151     </font></a><span class="default">						</span><span class="keyword">delete <a href="dictionary_P.html#1375">pSocketTask</a></span><span class="default">;</span>
+<a name="152"><font size=-1>152     </font></a><span class="default">						<a href="dictionary_W.html#50">WriteRunInfo</a>::<a href="dictionary_W.html#170">WriteLog</a>(</span><span class="string">&quot;LongConnectedThread : Destory task[%d,%d]&quot;</span><span class="default">, <a href="dictionary_P.html#1371">pBody</a>-&gt;<a href="dictionary_G.html#1056">GetDestMachineType</a>(), <a href="dictionary_P.html#1371">pBody</a>-&gt;<a href="dictionary_G.html#1057">GetDestMachineIndex</a>());</span>
+<a name="153"><font size=-1>153     </font></a><span class="default">					}</span>
+<a name="154"><font size=-1>154     </font></a><span class="default">					<a href="dictionary_I.html#1354">it</a> ++;</span>
+<a name="155"><font size=-1>155     </font></a><span class="default">				}</span>
+<a name="156"><font size=-1>156     </font></a><span class="default">			}</span>
+<a name="157"><font size=-1>157     </font></a><span class="default">			</span><span class="keyword">else</span>
+<a name="158"><font size=-1>158     </font></a><span class="keyword">			</span><span class="default">{</span>
+<a name="159"><font size=-1>159     </font></a><span class="default">				<a href="dictionary_M.html#366">map</a>&lt;ULONG64, CSocketTask*&gt;::<a href="dictionary_I.html#566">iterator</a> <a href="dictionary_I.html#1376">it</a> = <a href="dictionary_M.html#494">m_pMapSocketList</a>.<a href="dictionary_F.html#1335">find</a>(<a href="dictionary_N.html#1372">nTaskId</a>);</span>
+<a name="160"><font size=-1>160     </font></a><span class="default">				</span><span class="keyword">if</span><span class="default">( <a href="dictionary_I.html#1376">it</a> != <a href="dictionary_M.html#494">m_pMapSocketList</a>.<a href="dictionary_E.html#568">end</a>() )</span>
+<a name="161"><font size=-1>161     </font></a><span class="default">				{</span>
+<a name="162"><font size=-1>162     </font></a><span class="default">					<a href="dictionary_C.html#266">CSocketTask</a> * <a href="dictionary_P.html#1377">pSocketTask</a> = ( *<a href="dictionary_I.html#1376">it</a> ).<a href="dictionary_S.html#570">second</a>;</span>
+<a name="163"><font size=-1>163     </font></a><span class="default">					</span><span class="keyword">if </span><span class="default">( <a href="dictionary_P.html#1377">pSocketTask</a> )</span>
+<a name="164"><font size=-1>164     </font></a><span class="default">					{</span>
+<a name="165"><font size=-1>165     </font></a><span class="default">						</span><span class="keyword">delete <a href="dictionary_P.html#1377">pSocketTask</a></span><span class="default">;</span>
+<a name="166"><font size=-1>166     </font></a><span class="default">						<a href="dictionary_W.html#50">WriteRunInfo</a>::<a href="dictionary_W.html#170">WriteLog</a>(</span><span class="string">&quot;LongConnectedThread : Destory task[%d,%d]&quot;</span><span class="default">, <a href="dictionary_P.html#1371">pBody</a>-&gt;<a href="dictionary_G.html#1056">GetDestMachineType</a>(), <a href="dictionary_P.html#1371">pBody</a>-&gt;<a href="dictionary_G.html#1057">GetDestMachineIndex</a>());</span>
+<a name="167"><font size=-1>167     </font></a><span class="default">					}</span>
+<a name="168"><font size=-1>168     </font></a><span class="default">				}</span>
+<a name="169"><font size=-1>169     </font></a><span class="default">			}</span>
+<a name="170"><font size=-1>170     </font></a><span class="default">		}</span>
+<a name="171"><font size=-1>171     </font></a><span class="default">	}</span>
+<a name="172"><font size=-1>172     </font></a><span class="default">	</span><span class="keyword">else</span>
+<a name="173"><font size=-1>173     </font></a><span class="keyword">	</span><span class="default">{</span>
+<a name="174"><font size=-1>174     </font></a><span class="default">		<a href="dictionary_C.html#67">CNetProcessThread</a>::<a href="dictionary_P.html#486">Process</a>( <a href="dictionary_P.html#1350">pMsg</a> );</span>
+<a name="175"><font size=-1>175     </font></a><span class="default">	}</span>
+<a name="176"><font size=-1>176     </font></a><span class="default">	</span><span class="keyword">return </span><span class="number">0</span><span class="default">;</span>
+<a name="177"><font size=-1>177     </font></a><span class="default">}</span>
+<a name="178"><font size=-1>178     </font></a><span class="default"></span>
+<a name="179"><font size=-1>179     </font></a><span class="default"></span>
+</pre></body></html>

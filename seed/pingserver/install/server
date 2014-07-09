@@ -1,0 +1,66 @@
+#!/bin/bash
+
+PROPATH=/opt/pingserver/
+PRONAME=pingserver
+
+CHECK=`ps -ef c | grep -o '[^ ]*$' | grep -o "^${PRONAME}$"`
+
+start() {
+	if [ ! "${CHECK}" = "${PRONAME}" ]
+	then
+		cd ${PROPATH}
+		ulimit -c unlimited
+		ulimit -n 100000
+		./${PRONAME} &
+		cd - > /dev/null
+	fi
+	return 0
+}
+
+stop() {
+	killall ${PRONAME}
+	return 0
+}
+
+status() {
+	if [ ! "${CHECK}" = "${PRONAME}" ]
+	then
+		echo "${PRONAME} is stopped."
+	else
+		echo "${PRONAME} is running..."
+	fi
+	return 0
+}
+
+restart() {
+	stop
+	start
+	return $?
+}
+
+RETVAL=0
+case $1 in
+	start)
+		start
+		RETVAL=$?
+		;;
+	stop)
+		stop
+		RETVAL=$?
+		;;
+	status)
+		status
+		RETVAL=$?
+		;;
+	restart)
+		stop
+		start
+		RETVAL=$?
+		;;
+	*)
+		RETVAL=1
+esac
+
+exit ${RETVAL}
+
+

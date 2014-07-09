@@ -1,0 +1,10 @@
+build.sh
+env.sh
+obj
+include
+*.log*
+*.trace*
+src
+.svn
+foo
+*.tar.*

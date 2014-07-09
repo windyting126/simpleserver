@@ -1,0 +1,1 @@
+0 */1 * * * root /opt/DumpRcDb/dumpandrsync.sh >> /opt/DumpRcDb/runlog.txt

@@ -1,0 +1,2 @@
+*/1 * * * * root /opt/pconsrv/install/monitor.sh /opt/pconsrv pcon
+

@@ -1,0 +1,101 @@
+<html><head><title>D:\工作\taishan\server\srvframe\src\command\filereqhttpcmd.cpp</title><style type="text/css">div.i { background: #FF8080; }a.0 { color: #000000; } <!-- default --> 
+
+
+</style></head><body  bgcolor="#FFFFFF" link="blue" vlink="blue"><font color="000000"><h3>File: command\filereqhttpcmd.cpp</h3></font>
+<SCRIPT>
+ defaultStatus = "File: command\\filereqhttpcmd.cpp";
+</SCRIPT>
+<pre><font color="000000"></font><a name="1"><font  color="#000000" size=-1>    1</font></a> <font color="#000000"></font><font color="#FF0000">/*</font>
+<a name="2"><font  color="#000000" size=-1>    2</font></a> <font color="#FF0000"> * FileName:       </font>
+<a name="3"><font  color="#000000" size=-1>    3</font></a> <font color="#FF0000"> * Author:         wangqifeng  Version: 1.0  Date: 2007-7-27</font>
+<a name="4"><font  color="#000000" size=-1>    4</font></a> <font color="#FF0000"> * Description:    </font>
+<a name="5"><font  color="#000000" size=-1>    5</font></a> <font color="#FF0000"> * Version:        </font>
+<a name="6"><font  color="#000000" size=-1>    6</font></a> <font color="#FF0000"> * Function List:  </font>
+<a name="7"><font  color="#000000" size=-1>    7</font></a> <font color="#FF0000"> *                 1.</font>
+<a name="8"><font  color="#000000" size=-1>    8</font></a> <font color="#FF0000"> * History:        </font>
+<a name="9"><font  color="#000000" size=-1>    9</font></a> <font color="#FF0000"> *     &lt;author&gt;   &lt;time&gt;    &lt;version &gt;   &lt;desc&gt;</font>
+<a name="10"><font  color="#000000" size=-1>   10</font></a> <font color="#FF0000"> */</font>
+<a name="11"><font  color="#000000" size=-1>   11</font></a> <font color="#FF0000"></font><font color="#238E23">#include </font><font color="#FF00FF">&quot;filereqhttpcmd.h&quot;</font>
+<a name="12"><font  color="#000000" size=-1>   12</font></a> <font color="#FF00FF"><a class="0" href="dictionary_C.html#57">CMineType</a> <a class="0" href="dictionary_C.html#58">CFileReqHttpCmd</a></font><font color="#000000">::<a class="0" href="dictionary_C.html#66">m_mineType</a>;</font>
+<a name="13"><font  color="#000000" size=-1>   13</font></a> <font color="#000000"><a class="0" href="dictionary_S.html#14">string</a> <a class="0" href="dictionary_C.html#58">CFileReqHttpCmd</a>::<a class="0" href="dictionary_C.html#65">m_sFileRootDir</a>=</font><font color="#FF00FF">&quot;filedir/&quot;</font><font color="#000000">;</font>
+<a name="14"><font  color="#000000" size=-1>   14</font></a> <font color="#000000"><a class="0" href="dictionary_C.html#58">CFileReqHttpCmd</a>::<a class="0" href="dictionary_C.html#59">CFileReqHttpCmd</a>(<a class="0" href="dictionary_S.html#14">string</a> &amp;<a class="0" href="dictionary_S.html#69">sInHead</a>, <a class="0" href="dictionary_S.html#14">string</a> &amp;<a class="0" href="dictionary_S.html#70">sInBody</a>, <a class="0" href="dictionary_S.html#14">string</a> &amp;<a class="0" href="dictionary_S.html#71">sUrl</a>):<a class="0" href="dictionary_C.html#13">CMyHttpCmd</a>(<a class="0" href="dictionary_S.html#69">sInHead</a>, <a class="0" href="dictionary_S.html#70">sInBody</a>, <a class="0" href="dictionary_S.html#71">sUrl</a>)</font>
+<a name="15"><font  color="#000000" size=-1>   15</font></a> <font color="#000000">{        </font>
+<a name="16"><font  color="#000000" size=-1>   16</font></a> <font color="#000000">        <a class="0" href="dictionary_C.html#46">m_nIfAnnexInfo</a> = 0;</font>
+<a name="17"><font  color="#000000" size=-1>   17</font></a> <font color="#000000">}</font>
+<a name="18"><font  color="#000000" size=-1>   18</font></a> <font color="#000000"></font>
+<a name="19"><font  color="#000000" size=-1>   19</font></a> <font color="#000000"><a class="0" href="dictionary_C.html#58">CFileReqHttpCmd</a>::~<a class="0" href="dictionary_C.html#60">CFileReqHttpCmd</a>()</font>
+<a name="20"><font  color="#000000" size=-1>   20</font></a> <font color="#000000">{</font>
+<a name="21"><font  color="#000000" size=-1>   21</font></a> <font color="#000000">}</font>
+<a name="22"><font  color="#000000" size=-1>   22</font></a> <font color="#000000"></font>
+<a name="23"><font  color="#000000" size=-1>   23</font></a> <font color="#000000"></font><font color="#006FDD">int <a class="0" href="dictionary_C.html#58">CFileReqHttpCmd</a></font><font color="#000000">::<a class="0" href="dictionary_C.html#61">Process</a>()</font>
+<a name="24"><font  color="#000000" size=-1>   24</font></a> <font color="#000000">{      </font>
+<a name="25"><font  color="#000000" size=-1>   25</font></a> <font color="#000000">        </font><font color="#006FDD">try</font>
+<a name="26"><font  color="#000000" size=-1>   26</font></a> <font color="#006FDD">        </font><font color="#000000">{</font>
+<a name="27"><font  color="#000000" size=-1>   27</font></a> <font color="#000000">                </font><font color="#006FDD">if </font><font color="#000000">(<a class="0" href="dictionary_C.html#38">m_sUrl</a>.<a class="0" href="dictionary_F.html#72">find</a>(</font><font color="#FF00FF">&quot;..&quot;</font><font color="#000000">) != <a class="0" href="dictionary_S.html#14">string</a>::<a class="0" href="dictionary_N.html#73">npos</a>)</font>
+<a name="28"><font  color="#000000" size=-1>   28</font></a> <font color="#000000">                {</font>
+<a name="29"><font  color="#000000" size=-1>   29</font></a> <font color="#000000">                        <a class="0" href="dictionary_C.html#37">m_nResult</a> = -1;</font>
+<a name="30"><font  color="#000000" size=-1>   30</font></a> <font color="#000000">                        </font><font color="#006FDD">return </font><font color="#000000">-1;</font>
+<a name="31"><font  color="#000000" size=-1>   31</font></a> <font color="#000000">                }               </font>
+<a name="32"><font  color="#000000" size=-1>   32</font></a> <font color="#000000">                </font>
+<a name="33"><font  color="#000000" size=-1>   33</font></a> <font color="#000000">                                </font>
+<a name="34"><font  color="#000000" size=-1>   34</font></a> <font color="#000000">                <a class="0" href="dictionary_S.html#14">string</a> <a class="0" href="dictionary_S.html#74">sFile</a> = <a class="0" href="dictionary_C.html#65">m_sFileRootDir</a> + <a class="0" href="dictionary_C.html#38">m_sUrl</a>;</font>
+<a name="35"><font  color="#000000" size=-1>   35</font></a> <font color="#000000">                <a class="0" href="dictionary_C.html#76">CMyFile</a> <a class="0" href="dictionary_M.html#75">myfile</a>(<a class="0" href="dictionary_S.html#74">sFile</a>);</font>
+<a name="36"><font  color="#000000" size=-1>   36</font></a> <font color="#000000">                <a class="0" href="dictionary_M.html#75">myfile</a>.<a class="0" href="dictionary_F.html#77">FOpen</a>(</font><font color="#FF00FF">&quot;r&quot;</font><font color="#000000">);</font>
+<a name="37"><font  color="#000000" size=-1>   37</font></a> <font color="#000000">                </font><font color="#006FDD">struct <a class="0" href="dictionary_S.html#79">stat</a> </font><font color="#000000">*<a class="0" href="dictionary_P.html#78">pStat</a> = <a class="0" href="dictionary_M.html#75">myfile</a>.<a class="0" href="dictionary_G.html#80">GetStatBuf</a>();</font>
+<a name="38"><font  color="#000000" size=-1>   38</font></a> <font color="#000000">                                <a class="0" href="dictionary_C.html#67">m_sFileModTime</a> = <a class="0" href="dictionary_C.html#81">CToolKit</a>::<a class="0" href="dictionary_C.html#82">SecToHttpTime</a>(<a class="0" href="dictionary_P.html#78">pStat</a>-&gt;<a class="0" href="dictionary_S.html#83">st_mtime</a>);</font>
+<a name="39"><font  color="#000000" size=-1>   39</font></a> <font color="#000000">                                <a class="0" href="dictionary_S.html#14">string</a> <a class="0" href="dictionary_S.html#84">sOut</a>;</font>
+<a name="40"><font  color="#000000" size=-1>   40</font></a> <font color="#000000">                            </font><font color="#006FDD">int <a class="0" href="dictionary_R.html#85">ret</a> </font><font color="#000000">= <a class="0" href="dictionary_C.html#81">CToolKit</a>::<a class="0" href="dictionary_C.html#86">GetStringByLabel</a>(<a class="0" href="dictionary_C.html#31">m_sInHead</a>, </font><font color="#FF00FF">&quot;If-Modified-Since:&quot;</font><font color="#000000">, </font><font color="#FF00FF">&quot;\r\n&quot;</font><font color="#000000">, <a class="0" href="dictionary_S.html#84">sOut</a>);</font>
+<a name="41"><font  color="#000000" size=-1>   41</font></a> <font color="#000000">                                </font><font color="#006FDD">if </font><font color="#000000">(<a class="0" href="dictionary_R.html#85">ret</a> == 0) </font><font color="#FF0000">//有If-Modified-Since:</font>
+<a name="42"><font  color="#000000" size=-1>   42</font></a> <font color="#FF0000">                                </font><font color="#000000">{</font>
+<a name="43"><font  color="#000000" size=-1>   43</font></a> <font color="#000000">                                        <a class="0" href="dictionary_T.html#88">time_t</a> <a class="0" href="dictionary_M.html#87">modTime</a> = <a class="0" href="dictionary_C.html#81">CToolKit</a>::<a class="0" href="dictionary_C.html#89">TimeToSec</a>(<a class="0" href="dictionary_S.html#84">sOut</a>);</font>
+<a name="44"><font  color="#000000" size=-1>   44</font></a> <font color="#000000">                                        </font><font color="#006FDD">if </font><font color="#000000">(<a class="0" href="dictionary_P.html#78">pStat</a>-&gt;<a class="0" href="dictionary_S.html#83">st_mtime</a> == <a class="0" href="dictionary_M.html#87">modTime</a>)</font>
+<a name="45"><font  color="#000000" size=-1>   45</font></a> <font color="#000000">                                        {</font>
+<a name="46"><font  color="#000000" size=-1>   46</font></a> <font color="#000000">                                                <a class="0" href="dictionary_C.html#37">m_nResult</a> = 1;</font>
+<a name="47"><font  color="#000000" size=-1>   47</font></a> <font color="#000000">                                                </font><font color="#006FDD">return </font><font color="#000000">0;</font>
+<a name="48"><font  color="#000000" size=-1>   48</font></a> <font color="#000000">                                        }</font>
+<a name="49"><font  color="#000000" size=-1>   49</font></a> <font color="#000000">                                }</font>
+<a name="50"><font  color="#000000" size=-1>   50</font></a> <font color="#000000">                </font><font color="#006FDD">char </font><font color="#000000">*<a class="0" href="dictionary_P.html#90">pBuf</a> = </font><font color="#006FDD">new char</font><font color="#000000">[<a class="0" href="dictionary_P.html#78">pStat</a>-&gt;<a class="0" href="dictionary_S.html#91">st_size</a>];</font>
+<a name="51"><font  color="#000000" size=-1>   51</font></a> <font color="#000000">                <a class="0" href="dictionary_C.html#93">CBufMgr</a> <a class="0" href="dictionary_B.html#92">bufMgr</a>(<a class="0" href="dictionary_P.html#90">pBuf</a>); </font><font color="#FF0000">//自动释放</font>
+<a name="52"><font  color="#000000" size=-1>   52</font></a> <font color="#FF0000">                </font>
+<a name="53"><font  color="#000000" size=-1>   53</font></a> <font color="#FF0000">                <a class="0" href="dictionary_M.html#75">myfile</a></font><font color="#000000">.<a class="0" href="dictionary_F.html#94">FRead</a>(<a class="0" href="dictionary_P.html#90">pBuf</a>, <a class="0" href="dictionary_P.html#78">pStat</a>-&gt;<a class="0" href="dictionary_S.html#91">st_size</a>);</font>
+<a name="54"><font  color="#000000" size=-1>   54</font></a> <font color="#000000">                <a class="0" href="dictionary_C.html#34">m_sOutBody</a> = <a class="0" href="dictionary_S.html#14">string</a>(<a class="0" href="dictionary_P.html#90">pBuf</a>, <a class="0" href="dictionary_P.html#78">pStat</a>-&gt;<a class="0" href="dictionary_S.html#91">st_size</a>);</font>
+<a name="55"><font  color="#000000" size=-1>   55</font></a> <font color="#000000">        }</font>
+<a name="56"><font  color="#000000" size=-1>   56</font></a> <font color="#000000">        </font><font color="#006FDD">catch</font><font color="#000000">(<a class="0" href="dictionary_C.html#96">CMyException</a> &amp;<a class="0" href="dictionary_E.html#95">e</a>)</font>
+<a name="57"><font  color="#000000" size=-1>   57</font></a> <font color="#000000">        {</font>
+<a name="58"><font  color="#000000" size=-1>   58</font></a> <font color="#000000">                <a class="0" href="dictionary_C.html#37">m_nResult</a> = -1;</font>
+<a name="59"><font  color="#000000" size=-1>   59</font></a> <font color="#000000">                <a class="0" href="dictionary_W.html#97">WriteRunInfo</a>::<a class="0" href="dictionary_W.html#98">WriteError</a>(</font><font color="#FF00FF">&quot;Error, %s&quot;</font><font color="#000000">, <a class="0" href="dictionary_E.html#95">e</a>.<a class="0" href="dictionary_G.html#99">GetErrMsg</a>().<a class="0" href="dictionary_C.html#100">c_str</a>());</font>
+<a name="60"><font  color="#000000" size=-1>   60</font></a> <font color="#000000">        }</font>
+<a name="61"><font  color="#000000" size=-1>   61</font></a> <font color="#000000">        </font><font color="#006FDD">return </font><font color="#000000">0;</font>
+<a name="62"><font  color="#000000" size=-1>   62</font></a> <font color="#000000">}</font>
+<a name="63"><font  color="#000000" size=-1>   63</font></a> <font color="#000000"></font>
+<a name="64"><font  color="#000000" size=-1>   64</font></a> <font color="#000000"></font><font color="#006FDD">int <a class="0" href="dictionary_C.html#58">CFileReqHttpCmd</a></font><font color="#000000">::<a class="0" href="dictionary_C.html#62">Decode</a>()</font>
+<a name="65"><font  color="#000000" size=-1>   65</font></a> <font color="#000000">{        </font>
+<a name="66"><font  color="#000000" size=-1>   66</font></a> <font color="#000000">        </font><font color="#006FDD">return </font><font color="#000000">0;</font>
+<a name="67"><font  color="#000000" size=-1>   67</font></a> <font color="#000000">}</font>
+<a name="68"><font  color="#000000" size=-1>   68</font></a> <font color="#000000"></font>
+<a name="69"><font  color="#000000" size=-1>   69</font></a> <font color="#000000"></font><font color="#006FDD">int <a class="0" href="dictionary_C.html#58">CFileReqHttpCmd</a></font><font color="#000000">::<a class="0" href="dictionary_C.html#63">Encode</a>()</font>
+<a name="70"><font  color="#000000" size=-1>   70</font></a> <font color="#000000">{</font>
+<a name="71"><font  color="#000000" size=-1>   71</font></a> <font color="#000000">        </font><font color="#006FDD">if </font><font color="#000000">(<a class="0" href="dictionary_C.html#37">m_nResult</a> &lt; 0)</font>
+<a name="72"><font  color="#000000" size=-1>   72</font></a> <font color="#000000">        {</font>
+<a name="73"><font  color="#000000" size=-1>   73</font></a> <font color="#000000">            <a class="0" href="dictionary_C.html#35">m_sResHeader</a> =  </font><font color="#FF00FF">&quot;HTTP/1.1 404 NOT FOUND\r\n&quot;</font><font color="#000000">;</font>
+<a name="74"><font  color="#000000" size=-1>   74</font></a> <font color="#000000">        }</font>
+<a name="75"><font  color="#000000" size=-1>   75</font></a> <font color="#000000">                </font><font color="#006FDD">else if </font><font color="#000000">(<a class="0" href="dictionary_C.html#37">m_nResult</a> == 1) </font><font color="#FF0000">//304</font>
+<a name="76"><font  color="#000000" size=-1>   76</font></a> <font color="#FF0000">                </font><font color="#000000">{</font>
+<a name="77"><font  color="#000000" size=-1>   77</font></a> <font color="#000000">                        <a class="0" href="dictionary_C.html#35">m_sResHeader</a> = </font><font color="#FF00FF">&quot;HTTP/1.1 304 Not Modified\r\n&quot;</font><font color="#000000">;</font>
+<a name="78"><font  color="#000000" size=-1>   78</font></a> <font color="#000000">                        <a class="0" href="dictionary_C.html#35">m_sResHeader</a> += </font><font color="#FF00FF">&quot;Last-Modified: &quot;</font><font color="#000000">+ <a class="0" href="dictionary_C.html#67">m_sFileModTime</a> + </font><font color="#FF00FF">&quot;\r\n&quot;</font><font color="#000000">; </font>
+<a name="79"><font  color="#000000" size=-1>   79</font></a> <font color="#000000">                }</font>
+<a name="80"><font  color="#000000" size=-1>   80</font></a> <font color="#000000">        </font><font color="#006FDD">else </font><font color="#FF0000">//==0</font>
+<a name="81"><font  color="#000000" size=-1>   81</font></a> <font color="#FF0000">        </font><font color="#000000">{</font>
+<a name="82"><font  color="#000000" size=-1>   82</font></a> <font color="#000000">                <a class="0" href="dictionary_C.html#35">m_sResHeader</a> += </font><font color="#FF00FF">&quot;Last-Modified:&quot;</font><font color="#000000">+ <a class="0" href="dictionary_C.html#67">m_sFileModTime</a> + </font><font color="#FF00FF">&quot;\r\n&quot;</font><font color="#000000">;</font>
+<a name="83"><font  color="#000000" size=-1>   83</font></a> <font color="#000000">            <a class="0" href="dictionary_S.html#14">string</a> <a class="0" href="dictionary_S.html#101">sSuffix</a>;</font>
+<a name="84"><font  color="#000000" size=-1>   84</font></a> <font color="#000000">            <a class="0" href="dictionary_C.html#81">CToolKit</a>::<a class="0" href="dictionary_C.html#86">GetStringByLabel</a>(<a class="0" href="dictionary_C.html#38">m_sUrl</a>, </font><font color="#FF00FF">&quot;.&quot;</font><font color="#000000">, </font><font color="#FF00FF">&quot;&quot;</font><font color="#000000">, <a class="0" href="dictionary_S.html#101">sSuffix</a>);</font>
+<a name="85"><font  color="#000000" size=-1>   85</font></a> <font color="#000000">            <a class="0" href="dictionary_M.html#40">map</a>&lt;string, string&gt;::<a class="0" href="dictionary_I.html#102">iterator</a> <a class="0" href="dictionary_M.html#103">mapItr</a> = <a class="0" href="dictionary_C.html#66">m_mineType</a>.<a class="0" href="dictionary_C.html#56">m_minetype</a>.<a class="0" href="dictionary_F.html#72">find</a>(<a class="0" href="dictionary_S.html#101">sSuffix</a>);</font>
+<a name="86"><font  color="#000000" size=-1>   86</font></a> <font color="#000000">            </font><font color="#006FDD">if </font><font color="#000000">(<a class="0" href="dictionary_M.html#103">mapItr</a> != <a class="0" href="dictionary_C.html#66">m_mineType</a>.<a class="0" href="dictionary_C.html#56">m_minetype</a>.<a class="0" href="dictionary_E.html#104">end</a>())</font>
+<a name="87"><font  color="#000000" size=-1>   87</font></a> <font color="#000000">            {</font>
+<a name="88"><font  color="#000000" size=-1>   88</font></a> <font color="#000000">                <a class="0" href="dictionary_C.html#35">m_sResHeader</a> += </font><font color="#FF00FF">&quot;Content-Type: &quot; </font><font color="#000000">+ <a class="0" href="dictionary_M.html#103">mapItr</a>-&gt;<a class="0" href="dictionary_S.html#105">second</a> + </font><font color="#FF00FF">&quot;\r\n&quot;</font><font color="#000000">;</font>
+<a name="89"><font  color="#000000" size=-1>   89</font></a> <font color="#000000">            }</font>
+<a name="90"><font  color="#000000" size=-1>   90</font></a> <font color="#000000">        }</font>
+<a name="91"><font  color="#000000" size=-1>   91</font></a> <font color="#000000">        </font><font color="#006FDD">return </font><font color="#000000">0;</font>
+<a name="92"><font  color="#000000" size=-1>   92</font></a> <font color="#000000">}</font>
+<a name="93"><font  color="#000000" size=-1>   93</font></a> <font color="#000000"></font>
+<a name="94"><font  color="#000000" size=-1>   94</font></a> <font color="#000000"></font></pre></body></html>

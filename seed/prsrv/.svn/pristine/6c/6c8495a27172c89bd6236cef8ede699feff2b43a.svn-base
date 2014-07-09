@@ -1,0 +1,14 @@
+#!/bin/sh
+mysqld_safe_real $* &
+sleep 5
+#echo hello
+for ((i = 0; i < 11; ++i))
+do
+   #echo $i;
+    mysql -uroot -e "REPLACE INTO presource_peer.t_rc_online_peer_list_temp_$i SELECT * FROM presource_peer.t_rc_peer_list_$i;"
+done
+for ((i = 0; i < 11; ++i))
+do
+   #echo $i;
+    mysql -uroot -e "REPLACE INTO presource_peer_new.t_rc_online_peer_list_temp_$i SELECT * FROM presource_peer_new.t_rc_peer_list_$i;"
+done

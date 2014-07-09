@@ -1,0 +1,36 @@
+<html><head><title>timestat.h</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" type="text/css" href="sourcestyles.css" />
+</head><body link="blue" vlink="blue">
+<h3>File: D:\工作\taishan\server\srvframe\src\stat\timestat.h</h3>
+<SCRIPT>
+defaultStatus = "File: D:\\工作\\taishan\\server\\srvframe\\src\\stat\\timestat.h";
+top.document.title  = "timestat.h";
+</SCRIPT>
+<pre><span class="default"></span><a name="1"><font size=-1>1     </font></a><span class="default"></span><span class="preproc">#ifndef <a href="dictionary_Non-Alpha.html#1474">__TIME_STAT_H</a></span>
+<a name="2"><font size=-1>2     </font></a><span class="preproc">#define <a href="dictionary_Non-Alpha.html#1474">__TIME_STAT_H</a></span>
+<a name="3"><font size=-1>3     </font></a><span class="preproc">#include </span><span class="string">&lt;sys/time.h&gt;</span>
+<a name="4"><font size=-1>4     </font></a><span class="string"></span>
+<a name="5"><font size=-1>5     </font></a><span class="string"></span><span class="keyword">class <a href="dictionary_C.html#974">CTimeStat</a></span>
+<a name="6"><font size=-1>6     </font></a><span class="keyword"></span><span class="default">{</span>
+<a name="7"><font size=-1>7     </font></a><span class="default"></span><span class="keyword">public</span><span class="default">:</span>
+<a name="8"><font size=-1>8     </font></a><span class="default">        <a href="dictionary_C.html#979">CTimeStat</a>();</span>
+<a name="9"><font size=-1>9     </font></a><span class="default">        ~<a href="dictionary_Non-Alpha.html#980">CTimeStat</a>();</span>
+<a name="10"><font size=-1>10     </font></a><span class="default"></span>
+<a name="11"><font size=-1>11     </font></a><span class="default">        </span><span class="keyword">void <a href="dictionary_B.html#1145">Begin</a></span><span class="default">();</span>
+<a name="12"><font size=-1>12     </font></a><span class="default">        </span><span class="keyword">void <a href="dictionary_E.html#1476">End</a></span><span class="default">();</span>
+<a name="13"><font size=-1>13     </font></a><span class="default">        </span><span class="keyword">void <a href="dictionary_N.html#1477">NetEnd</a></span><span class="default">();</span>
+<a name="14"><font size=-1>14     </font></a><span class="default">        </span><span class="keyword">int <a href="dictionary_G.html#1478">GetTime</a></span><span class="default">();</span>
+<a name="15"><font size=-1>15     </font></a><span class="default">        </span><span class="keyword">int <a href="dictionary_G.html#1479">GetNetTime</a></span><span class="default">();</span>
+<a name="16"><font size=-1>16     </font></a><span class="default"></span>
+<a name="17"><font size=-1>17     </font></a><span class="default">        </span><span class="keyword">int <a href="dictionary_C.html#981">Clone</a></span><span class="default">(<a href="dictionary_C.html#974">CTimeStat</a> &amp;timeStat);                </span>
+<a name="18"><font size=-1>18     </font></a><span class="default"></span>
+<a name="19"><font size=-1>19     </font></a><span class="default">        </span><span class="keyword">int <a href="dictionary_I.html#1480">Init</a></span><span class="default">(<a href="dictionary_T.html#1481">timeval</a> &amp;beginTime, <a href="dictionary_T.html#1481">timeval</a> &amp;netEndTime,   <a href="dictionary_T.html#1481">timeval</a> &amp;endTime);</span>
+<a name="20"><font size=-1>20     </font></a><span class="default"></span><span class="keyword">private</span><span class="default">:</span>
+<a name="21"><font size=-1>21     </font></a><span class="default">        <a href="dictionary_T.html#1481">timeval</a>  <a href="dictionary_M.html#1482">m_beginTime</a>;</span>
+<a name="22"><font size=-1>22     </font></a><span class="default">        <a href="dictionary_T.html#1481">timeval</a>  <a href="dictionary_M.html#1483">m_netEndTime</a>;</span>
+<a name="23"><font size=-1>23     </font></a><span class="default">        <a href="dictionary_T.html#1481">timeval</a>  <a href="dictionary_M.html#1484">m_endTime</a>;</span>
+<a name="24"><font size=-1>24     </font></a><span class="default">};</span>
+<a name="25"><font size=-1>25     </font></a><span class="default"></span><span class="preproc">#endif</span>
+<a name="26"><font size=-1>26     </font></a><span class="preproc"></span>
+</pre></body></html>

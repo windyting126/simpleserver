@@ -1,0 +1,1 @@
+*/1 * * * * root /opt/LoadPeerInfo/loadpeerinfo.sh >> /opt/LoadPeerInfo/runlog.txt

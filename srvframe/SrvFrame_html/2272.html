@@ -1,0 +1,61 @@
+<html><head><title>D:\นคื๗\taishan\server\srvframe\src\task\LongConnectedListenTask.h</title><style type="text/css">div.i { background: #FF8080; }a.0 { color: #000000; } <!-- default --> 
+
+
+</style></head><body  bgcolor="#FFFFFF" link="blue" vlink="blue"><font color="000000"><h3>File: task\LongConnectedListenTask.h</h3></font>
+<SCRIPT>
+ defaultStatus = "File: task\\LongConnectedListenTask.h";
+</SCRIPT>
+<pre><font color="000000"></font><a name="1"><font  color="#000000" size=-1>    1</font></a> <font color="#000000"></font><font color="#FF0000">/****************************************************************************</font>
+<a name="2"><font  color="#000000" size=-1>    2</font></a> <font color="#FF0000">**</font>
+<a name="3"><font  color="#000000" size=-1>    3</font></a> <font color="#FF0000">**  Copyright  (c)  2008-2009,  Baofeng, Inc.  All Rights Reserved.</font>
+<a name="4"><font  color="#000000" size=-1>    4</font></a> <font color="#FF0000">**</font>
+<a name="5"><font  color="#000000" size=-1>    5</font></a> <font color="#FF0000">**  Subsystem:    ConnectServer</font>
+<a name="6"><font  color="#000000" size=-1>    6</font></a> <font color="#FF0000">**  File:                    LongConnectedListenTask.h</font>
+<a name="7"><font  color="#000000" size=-1>    7</font></a> <font color="#FF0000">**  Created By:   fwx</font>
+<a name="8"><font  color="#000000" size=-1>    8</font></a> <font color="#FF0000">**  Created On:   2009/01/08</font>
+<a name="9"><font  color="#000000" size=-1>    9</font></a> <font color="#FF0000">**</font>
+<a name="10"><font  color="#000000" size=-1>   10</font></a> <font color="#FF0000">**  Purpose:</font>
+<a name="11"><font  color="#000000" size=-1>   11</font></a> <font color="#FF0000">**     LongConnectedListenTask</font>
+<a name="12"><font  color="#000000" size=-1>   12</font></a> <font color="#FF0000">**</font>
+<a name="13"><font  color="#000000" size=-1>   13</font></a> <font color="#FF0000">**  History:</font>
+<a name="14"><font  color="#000000" size=-1>   14</font></a> <font color="#FF0000">**  Programmer      Date         Version        Number      Description</font>
+<a name="15"><font  color="#000000" size=-1>   15</font></a> <font color="#FF0000">**  --------------- --------   ---------- ------------------------------</font>
+<a name="16"><font  color="#000000" size=-1>   16</font></a> <font color="#FF0000">**    fwx       2009/01/08         1.0            01          creation</font>
+<a name="17"><font  color="#000000" size=-1>   17</font></a> <font color="#FF0000">****************************************************************************/</font>
+<a name="18"><font  color="#000000" size=-1>   18</font></a> <font color="#FF0000"></font>
+<a name="19"><font  color="#000000" size=-1>   19</font></a> <font color="#FF0000"></font><font color="#238E23">#ifndef <a class="0" href="dictionary_Non-Alpha.html#2273">_LONGCONNECTEDLISTENTASK_H_H_</a></font>
+<a name="20"><font  color="#000000" size=-1>   20</font></a> <font color="#238E23">#define <a class="0" href="dictionary_Non-Alpha.html#2273">_LONGCONNECTEDLISTENTASK_H_H_</a></font>
+<a name="21"><font  color="#000000" size=-1>   21</font></a> <font color="#238E23"></font>
+<a name="22"><font  color="#000000" size=-1>   22</font></a> <font color="#238E23">#include </font><font color="#FF00FF">&quot;framecommon/framecommon.h&quot;</font>
+<a name="23"><font  color="#000000" size=-1>   23</font></a> <font color="#FF00FF"></font><font color="#238E23">#include </font><font color="#FF00FF">&quot;sockettask.h&quot;</font>
+<a name="24"><font  color="#000000" size=-1>   24</font></a> <font color="#FF00FF"></font><font color="#006FDD">using namespace </font><font color="#000000">MYFRAMECOMMON;</font>
+<a name="25"><font  color="#000000" size=-1>   25</font></a> <font color="#000000"></font>
+<a name="26"><font  color="#000000" size=-1>   26</font></a> <font color="#000000"></font><font color="#006FDD">typedef struct <a class="0" href="dictionary_T.html#2274">tagLISTENBLOCK</a></font>
+<a name="27"><font  color="#000000" size=-1>   27</font></a> <font color="#006FDD"></font><font color="#000000">{</font>
+<a name="28"><font  color="#000000" size=-1>   28</font></a> <font color="#000000">    </font><font color="#006FDD">int <a class="0" href="dictionary_T.html#2275">nSock</a></font><font color="#000000">;</font>
+<a name="29"><font  color="#000000" size=-1>   29</font></a> <font color="#000000">    <a class="0" href="dictionary_C.html#230">CThreadMutex</a> <a class="0" href="dictionary_T.html#2276">mutex</a>;</font>
+<a name="30"><font  color="#000000" size=-1>   30</font></a> <font color="#000000">    <a class="0" href="dictionary_T.html#2277">tagLISTENBLOCK</a>()</font>
+<a name="31"><font  color="#000000" size=-1>   31</font></a> <font color="#000000">    {</font>
+<a name="32"><font  color="#000000" size=-1>   32</font></a> <font color="#000000">        <a class="0" href="dictionary_T.html#2275">nSock</a> = -1;</font>
+<a name="33"><font  color="#000000" size=-1>   33</font></a> <font color="#000000">    }</font>
+<a name="34"><font  color="#000000" size=-1>   34</font></a> <font color="#000000">}<a class="0" href="dictionary_L.html#2278">LISTENBLOCK</a>, *<a class="0" href="dictionary_P.html#2279">PLISTENBLOCK</a>;</font>
+<a name="35"><font  color="#000000" size=-1>   35</font></a> <font color="#000000"></font>
+<a name="36"><font  color="#000000" size=-1>   36</font></a> <font color="#000000"></font><font color="#006FDD">class <a class="0" href="dictionary_C.html#2280">CLongConnectedListenTask</a></font>
+<a name="37"><font  color="#000000" size=-1>   37</font></a> <font color="#006FDD">        </font><font color="#000000">: </font><font color="#006FDD">public <a class="0" href="dictionary_C.html#853">CSocketTask</a></font>
+<a name="38"><font  color="#000000" size=-1>   38</font></a> <font color="#006FDD"></font><font color="#000000">{</font>
+<a name="39"><font  color="#000000" size=-1>   39</font></a> <font color="#000000"></font><font color="#006FDD">public</font><font color="#000000">:</font>
+<a name="40"><font  color="#000000" size=-1>   40</font></a> <font color="#000000">        <a class="0" href="dictionary_C.html#2281">CLongConnectedListenTask</a>( <a class="0" href="dictionary_C.html#542">CTcpSocket</a> *pSocket, <a class="0" href="dictionary_C.html#878">CNetProcessThread</a>*pWorkThread );</font>
+<a name="41"><font  color="#000000" size=-1>   41</font></a> <font color="#000000">        </font><font color="#006FDD">virtual </font><font color="#000000">~<a class="0" href="dictionary_C.html#2282">CLongConnectedListenTask</a>();</font>
+<a name="42"><font  color="#000000" size=-1>   42</font></a> <font color="#000000"></font>
+<a name="43"><font  color="#000000" size=-1>   43</font></a> <font color="#000000">        </font><font color="#006FDD">virtual int <a class="0" href="dictionary_C.html#2283">Init</a></font><font color="#000000">( </font><font color="#006FDD">void </font><font color="#000000">);</font>
+<a name="44"><font  color="#000000" size=-1>   44</font></a> <font color="#000000">        </font><font color="#006FDD">virtual int <a class="0" href="dictionary_C.html#2284">Process</a></font><font color="#000000">( <a class="0" href="dictionary_C.html#487">CMsg</a> *pMsg );</font>
+<a name="45"><font  color="#000000" size=-1>   45</font></a> <font color="#000000">        </font><font color="#006FDD">virtual int <a class="0" href="dictionary_C.html#2285">HandleProcess</a></font><font color="#000000">( </font><font color="#006FDD">int </font><font color="#000000">event );</font>
+<a name="46"><font  color="#000000" size=-1>   46</font></a> <font color="#000000"></font>
+<a name="47"><font  color="#000000" size=-1>   47</font></a> <font color="#000000"></font><font color="#006FDD">protected</font><font color="#000000">:</font>
+<a name="48"><font  color="#000000" size=-1>   48</font></a> <font color="#000000">       </font><font color="#006FDD">virtual int <a class="0" href="dictionary_C.html#2286">PutMsgToSendList</a></font><font color="#000000">(</font><font color="#006FDD">const char </font><font color="#000000">*pBuf, </font><font color="#006FDD">int </font><font color="#000000">nLen);        </font>
+<a name="49"><font  color="#000000" size=-1>   49</font></a> <font color="#000000">        </font><font color="#006FDD">virtual int <a class="0" href="dictionary_C.html#2287">DestroySelf</a></font><font color="#000000">();</font>
+<a name="50"><font  color="#000000" size=-1>   50</font></a> <font color="#000000">        </font><font color="#006FDD">virtual int <a class="0" href="dictionary_C.html#2288">AddToEpoll</a></font><font color="#000000">();</font>
+<a name="51"><font  color="#000000" size=-1>   51</font></a> <font color="#000000"></font>
+<a name="52"><font  color="#000000" size=-1>   52</font></a> <font color="#000000">};</font>
+<a name="53"><font  color="#000000" size=-1>   53</font></a> <font color="#000000"></font><font color="#238E23">#endif </font><font color="#FF0000">//_LONGCONNECTEDLISTENTASK_H_H_</font>
+<a name="54"><font  color="#000000" size=-1>   54</font></a> <font color="#FF0000"></font></pre></body></html>
